@@ -13,9 +13,21 @@ class AppStyle {
     fontFamily: AppFonts.poppins,
   );
   static TextStyle headlinestyle2() => TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.normal,
+    color: AppColor.primaryColor,
+    fontFamily: AppFonts.poppins,
+  );
+  static TextStyle headlinestyle3() => TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.normal,
     color: AppColor.primaryColor,
+    fontFamily: AppFonts.poppins,
+  );
+  static TextStyle smallTextStyle() => TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.normal,
+    color: AppColor.smallTextColor,
     fontFamily: AppFonts.poppins,
   );
 }

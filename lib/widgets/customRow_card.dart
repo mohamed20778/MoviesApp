@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/theme/app_style.dart';
 
 class CustomRowCard extends StatelessWidget {
   final String emoji;
@@ -9,9 +11,9 @@ class CustomRowCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 14)),
-        const SizedBox(width: 8),
-        Text(text, style: const TextStyle(fontSize: 12, color: Colors.white70)),
+        Text(emoji, style: AppStyle.headlinestyle3()),
+        SizedBox(width: 8.w),
+        Text(text, style: AppStyle.headlinestyle3()),
       ],
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/theme/app_style.dart';
+import 'package:movies_app/cubits/get_details_cubit/get_details_cubit.dart';
 import 'package:movies_app/routing/app_routes.dart';
 import 'package:movies_app/view/home_screen.dart';
 import 'package:movies_app/view/movie_details.dart';
@@ -10,7 +12,7 @@ class RouterGenerator {
   static final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
 
-  static late final GoRouter mainRoutingOurApp = GoRouter(
+  static final GoRouter mainRoutingOurApp = GoRouter(
     navigatorKey: rootNavigatorKey,
     debugLogDiagnostics: true,
     redirect: (BuildContext context, GoRouterState state) {
@@ -45,11 +47,16 @@ class RouterGenerator {
       GoRoute(
         name: AppRoutes.movieDetails,
         path: AppRoutes.movieDetails,
-        pageBuilder:
-            (context, state) => MaterialPage(
-              key: state.pageKey,
-              child: const MovDetailsScreen(),
+        pageBuilder: (context, state) {
+          final movieId = state.extra as int;
+          return MaterialPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => GetDetailsCubit(),
+              child: MovieDetailsPage(movieId: movieId),
             ),
+          );
+        },
       ),
     ],
   );
