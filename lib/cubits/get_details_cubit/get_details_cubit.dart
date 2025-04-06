@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:movies_app/core/services/movDetails_service.dart';
+import 'package:movies_app/core/services/details_service.dart';
 import 'package:movies_app/models/movie_model.dart';
 
 part 'get_details_state.dart';

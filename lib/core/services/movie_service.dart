@@ -24,8 +24,8 @@ class MovieService {
     try {
       final response = await dio.get('/movie/popular');
       if (kDebugMode) {
-        print(response.headers);
-        print(response.data);
+        print("Api Header:${response.headers}");
+        print("Api Data:${response.data}");
       }
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['results'];
@@ -33,7 +33,6 @@ class MovieService {
         for (int i = 0; i < data.length; i++) {
           movieList.add(MovieModel.fromJson(data[i]));
         }
-        print("my dataaaaaaaaaa ${movieList[10].backdropPath}");
       }
     } on DioException catch (e) {
       throw Exception("Error: ${e.message}");

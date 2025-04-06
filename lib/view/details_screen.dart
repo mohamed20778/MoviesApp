@@ -22,6 +22,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     BlocProvider.of<GetDetailsCubit>(context).getDetails(widget.movieId);
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

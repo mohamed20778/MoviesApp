@@ -1,19 +1,18 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/services/movDetails_service.dart';
-import 'package:movies_app/core/services/movie_service.dart';
+import 'package:movies_app/core/services/details_service.dart';
 import 'package:movies_app/core/theme/app_color.dart';
 import 'package:movies_app/core/theme/app_style.dart';
 import 'package:movies_app/core/utils/constants.dart';
-import 'package:movies_app/cubits/get_details_cubit/get_details_cubit.dart';
+
 import 'package:movies_app/models/movie_model.dart';
 import 'package:movies_app/routing/app_routes.dart';
-import 'package:movies_app/view/movie_details.dart';
-import 'package:movies_app/widgets/customRow_card.dart';
 
+import 'package:movies_app/widgets/custom_row.dart';
+
+// ignore: must_be_immutable
 class MovieCard extends StatefulWidget {
   MovieModel movieItem;
   MovieCard({super.key, required this.movieItem});
@@ -29,18 +28,7 @@ class _MovieCardState extends State<MovieCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder:
-                (context) => BlocProvider(
-                  create:
-                      (context) =>
-                          GetDetailsCubit(detailsService: MovdetailsService()),
-                  child: MovieDetailsPage(movieId: widget.movieItem.id!),
-                ),
-          ),
-        );
+        context.push('${AppRoutes.movieDetails}${widget.movieItem.id}');
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 15.h),
@@ -71,8 +59,8 @@ class _MovieCardState extends State<MovieCard> {
                       StackTrace? stackTrace,
                     ) => Container(
                       color: Colors.grey[800],
-                      width: 80,
-                      height: 120,
+                      width: 80.w,
+                      height: 120.h,
                       child: const Icon(Icons.image, color: Colors.grey),
                     ),
               ),
@@ -99,7 +87,7 @@ class _MovieCardState extends State<MovieCard> {
                             Icon(
                               Icons.star,
                               color: AppColor.iconColor,
-                              size: 16,
+                              size: 16.sp,
                             ),
                             Text(
                               widget.movieItem.voteAverage.toString(),

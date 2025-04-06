@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movies_app/core/services/movDetails_service.dart';
 import 'package:movies_app/core/services/movie_service.dart';
 import 'package:movies_app/core/theme/app_style.dart';
 import 'package:movies_app/cubits/get_movie_cubit/get_movie_cubit.dart';
@@ -24,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     BlocProvider.of<GetMovieCubit>(context).getMovies();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<GetMovieCubit, GetMovieState>(
