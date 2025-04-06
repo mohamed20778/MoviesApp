@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +61,7 @@ class RouterGenerator {
         name: AppRoutes.movieDetails,
         path: '${AppRoutes.movieDetails}:id',
         pageBuilder: (context, state) {
-          final movieId = int.tryParse(state.pathParameters['id'] ?? '');
+          final movieId = int.tryParse(state.pathParameters['id']!);
           if (movieId == null) {
             return MaterialPage(key: state.pageKey, child: const HomeScreen());
           }
@@ -80,16 +81,17 @@ class RouterGenerator {
 
   static void handleDeepLink(Uri uri) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final context = rootNavigatorKey.currentContext;
-      if (context == null) return;
-
-      debugPrint('Processing deep link: $uri');
-
       if (uri.scheme == 'movieapptask' && uri.host == 'open') {
+        if (kDebugMode) {
+          print('Received deep link, navigating to home screen');
+        }
         final pathSegments = uri.pathSegments;
         if (pathSegments.length == 2 && pathSegments[0] == 'movie') {
           final movieId = int.tryParse(pathSegments[1]);
           if (movieId != null) {
+            if (kDebugMode) {
+              print('Navigating to movie details screen with ID: $movieId');
+            }
             mainRoutingOurApp.go('${AppRoutes.movieDetails}$movieId');
             return;
           }
@@ -97,18 +99,9 @@ class RouterGenerator {
         mainRoutingOurApp.go(AppRoutes.homeScreen);
       } else if (uri.scheme == 'https' &&
           uri.host == 'mohamed20778.github.io') {
-        // Only handle if path is exactly /deeplink/movie/123
-        final pathSegments = uri.pathSegments;
-        if (pathSegments.length == 3 &&
-            pathSegments[0] == 'deeplink' &&
-            pathSegments[1] == 'movie') {
-          final movieId = int.tryParse(pathSegments[2]);
-          if (movieId != null) {
-            mainRoutingOurApp.go('${AppRoutes.movieDetails}$movieId');
-            return;
-          }
+        if (kDebugMode) {
+          print('Received GitHub deep link, navigating to home screen');
         }
-        // All other cases go to home
         mainRoutingOurApp.go(AppRoutes.homeScreen);
       }
     });
@@ -118,13 +111,11 @@ class RouterGenerator {
     const platform = MethodChannel('app.channel/deeplink');
 
     try {
-      // Get the initial link if the app was opened from a deep link
       final initialLink = await platform.invokeMethod<String>('getInitialLink');
       if (initialLink != null) {
         handleDeepLink(Uri.parse(initialLink));
       }
 
-      // Set up a handler for incoming links while the app is running
       platform.setMethodCallHandler((call) async {
         if (call.method == 'onNewLink') {
           handleDeepLink(Uri.parse(call.arguments as String));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/services/movie_service.dart';
+import 'package:movies_app/core/theme/app_color.dart';
 import 'package:movies_app/core/theme/app_style.dart';
 import 'package:movies_app/cubits/get_movie_cubit/get_movie_cubit.dart';
 import 'package:movies_app/widgets/movie_card.dart';
@@ -29,7 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocBuilder<GetMovieCubit, GetMovieState>(
         builder: (context, state) {
           if (state is GetMovieLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(color: AppColor.iconColor),
+            );
           } else if (state is GetMovieSuccess) {
             return Padding(
               padding: EdgeInsets.only(

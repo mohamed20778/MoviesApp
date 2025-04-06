@@ -15,10 +15,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      context.push(AppRoutes.homeScreen);
+      // ignore: use_build_context_synchronously
+      context.pushReplacement(AppRoutes.homeScreen);
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(child: Image.asset('assets/images/splash_screen.png')),

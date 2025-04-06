@@ -11,16 +11,14 @@ class GetMovieCubit extends Cubit<GetMovieState> {
   GetMovieCubit({this.movieService}) : super(GetMovieInitial());
 
   Future<void> getMovies() async {
-    if (state is GetMovieLoading) return; // Prevent duplicate loading
+    if (state is GetMovieLoading) return;
 
     emit(GetMovieLoading());
     try {
       final movieList = await MovieService().movieService();
       emit(GetMovieSuccess(movieListState: movieList));
     } catch (e) {
-      emit(
-        GetMovieFailure(errmessage: e is String ? e : 'Failed to load movies'),
-      );
+      emit(GetMovieFailure(errmessage: e.toString()));
     }
   }
 }

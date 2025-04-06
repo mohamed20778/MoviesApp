@@ -16,27 +16,24 @@ class MovdetailsService {
                 'Authorization': "Bearer ${ApiConstants.token}",
                 'accept': 'application/json',
               },
-              connectTimeout: const Duration(seconds: 10), // Added timeout
+              connectTimeout: const Duration(seconds: 10),
               receiveTimeout: const Duration(seconds: 10),
             ),
           );
 
   Future<MovieModel> movDetails({required int id}) async {
     try {
-      final response = await dio.get<Map<String, dynamic>>(
-        '/movie/$id',
-      ); // Specify response type
+      final response = await dio.get<Map<String, dynamic>>('/movie/$id');
 
       if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print('API Response: ${response.data}');
-        }
-
         if (response.data == null) {
           throw Exception('API returned null data');
         }
 
         final movieDetails = MovieModel.fromJson(response.data!);
+        if (kDebugMode) {
+          print("Api details header: ${response.headers}");
+        }
 
         if (kDebugMode) {
           print("Successfully fetched: ${movieDetails.title}");
@@ -48,16 +45,11 @@ class MovdetailsService {
           'Failed to load movie details. Status: ${response.statusCode}',
         );
       }
-    } on DioException catch (e) {
+    } catch (e) {
       if (kDebugMode) {
-        print('Dio Error: ${e.message}\n${e.stackTrace}');
+        print('details Error: ${e.toString()}');
       }
-      throw Exception('Network error: ${e.message}');
-    } catch (e, stackTrace) {
-      if (kDebugMode) {
-        print('Unexpected Error: $e\n$stackTrace');
-      }
-      throw Exception('Failed to load movie details: $e');
+      throw Exception('Network error: ${e.toString()}');
     }
   }
 }

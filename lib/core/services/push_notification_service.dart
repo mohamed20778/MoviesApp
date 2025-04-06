@@ -1,5 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class PushNotificationService {
@@ -18,18 +18,25 @@ class PushNotificationService {
         FirebaseMessaging.onMessage.listen((message) {
           if (message.notification != null) {
             _showNotification(
-              message.notification?.title ?? 'New Notification',
+              message.notification?.title ?? '',
               message.notification?.body ?? '',
             );
           }
         });
 
-        // Get and print FCM token
+        FirebaseMessaging.onMessageOpenedApp.listen((message) {
+          if (message.notification != null) {}
+        });
+
         final token = await FirebaseMessaging.instance.getToken();
-        print("FCM Token: $token");
+        if (kDebugMode) {
+          print("FCM Token: $token");
+        }
       }
     } catch (e) {
-      print('Error configuring notifications: $e');
+      if (kDebugMode) {
+        print('Error configuring notifications: $e');
+      }
     }
   }
 
@@ -55,7 +62,9 @@ class PushNotificationService {
         },
       );
     } catch (e) {
-      print('Error initializing local notifications: $e');
+      if (kDebugMode) {
+        print('Error initializing local notifications: $e');
+      }
     }
   }
 
@@ -63,8 +72,8 @@ class PushNotificationService {
     try {
       const AndroidNotificationDetails androidDetails =
           AndroidNotificationDetails(
-            'high_importance_channel', // Change to your channel ID
-            'Ez Notifications', // Change to your channel name
+            'high_importance_channel',
+            'Ez Notifications',
             channelDescription: 'Channel Description',
             importance: Importance.max,
             priority: Priority.high,
@@ -75,14 +84,16 @@ class PushNotificationService {
       );
 
       await flutterLocalNotificationsPlugin.show(
-        0, // Notification ID
+        0,
         title,
         body,
         platformDetails,
         payload: 'notification_payload',
       );
     } catch (e) {
-      print('Error showing notification: $e');
+      if (kDebugMode) {
+        print('Error showing notification: $e');
+      }
     }
   }
 }

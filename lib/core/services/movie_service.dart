@@ -24,8 +24,7 @@ class MovieService {
     try {
       final response = await dio.get('/movie/popular');
       if (kDebugMode) {
-        print("Api Header:${response.headers}");
-        print("Api Data:${response.data}");
+        print("Api movies Header:${response.headers}");
       }
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['results'];
@@ -34,8 +33,10 @@ class MovieService {
           movieList.add(MovieModel.fromJson(data[i]));
         }
       }
-    } on DioException catch (e) {
-      throw Exception("Error: ${e.message}");
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error of movies Service: ${e.toString()}");
+      }
     }
     return movieList;
   }

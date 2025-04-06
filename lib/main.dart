@@ -1,4 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,8 +10,14 @@ import 'package:movies_app/cubits/observers/my_observer.dart';
 import 'package:movies_app/firebase_options.dart';
 import 'package:movies_app/routing/router_generator.dart';
 
-// 1. Declare navigatorKey as final at the top level
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+
+  if (kDebugMode) {
+    print("Handling a background message: ${message.messageId}");
+  }
+}
 
 void main() async {
   Bloc.observer = MyObserver();
@@ -18,10 +26,15 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    print("Firebase initialized successfully");
+    if (kDebugMode) {
+      print("Firebase initialized successfully");
+    }
   } catch (e) {
-    print("Firebase initialization failed: $e");
+    if (kDebugMode) {
+      print("Firebase initialization failed: $e");
+    }
   }
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await RouterGenerator.initDeepLinks();
   await PushNotificationService().configNotifications();
 
@@ -41,9 +54,9 @@ class MyApp extends StatelessWidget {
           (context, child) => BlocProvider(
             create: (context) => GetMovieCubit(),
             child: MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                textScaler: TextScaler.noScaling, // Disable system text scaling
-              ),
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: TextScaler.noScaling),
               child: MaterialApp.router(
                 routerConfig: RouterGenerator.mainRoutingOurApp,
                 debugShowCheckedModeBanner: false,

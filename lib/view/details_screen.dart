@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/theme/app_color.dart';
 import 'package:movies_app/core/theme/app_style.dart';
 import 'package:movies_app/core/utils/constants.dart';
 import 'package:movies_app/cubits/get_details_cubit/get_details_cubit.dart';
@@ -32,7 +33,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       body: BlocBuilder<GetDetailsCubit, GetDetailsState>(
         builder: (context, state) {
           if (state is GetDetailsLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(color: AppColor.iconColor),
+            );
           } else if (state is GetDetailsSuccess) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,7 +124,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       child: Text('|'),
                     ),
                     Text(
-                      '🕧 ${state.movieDetails!.runtime!}',
+                      '🕧 ${state.movieDetails!.runtime!} ',
                       style: AppStyle.headlinestyle2(),
                     ),
                   ],

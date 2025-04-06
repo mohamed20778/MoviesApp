@@ -123,8 +123,6 @@ class _MovieCardState extends State<MovieCard> {
           ],
         ),
       ),
-
-      // Helper Widget
     );
   }
 }

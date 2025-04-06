@@ -10,7 +10,7 @@ class GetDetailsCubit extends Cubit<GetDetailsState> {
   GetDetailsCubit({this.detailsService}) : super(GetDetailsInitial());
 
   Future<void> getDetails(int id) async {
-    if (state is GetDetailsLoading) return; // Prevent duplicate loading
+    if (state is GetDetailsLoading) return;
     emit(GetDetailsLoading());
     try {
       final movieDetails = await detailsService!.movDetails(id: id);
