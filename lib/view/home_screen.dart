@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movies_app/core/services/movie_service.dart';
 import 'package:movies_app/core/theme/app_color.dart';
 import 'package:movies_app/core/theme/app_style.dart';
 import 'package:movies_app/cubits/get_movie_cubit/get_movie_cubit.dart';
@@ -16,7 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final MovieService service = MovieService();
   @override
   @override
   void initState() {
@@ -48,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     'What do you want to watch?',
                     style: AppStyle.headlinestyle1(),
                   ),
-
                   SizedBox(height: 40.h),
                   Flexible(
                     child: CustomScrollView(
@@ -74,11 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 SizedBox(height: 100.h),
-                MaterialButton(
-                  onPressed: () async {
-                    await service.movieService();
-                  },
-                ),
+                MaterialButton(onPressed: () async {}),
                 Text('Something went wrong in cubit'),
               ],
             ),

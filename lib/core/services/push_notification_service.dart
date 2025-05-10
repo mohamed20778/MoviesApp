@@ -11,6 +11,11 @@ class PushNotificationService {
       final notificationSetting =
           await FirebaseMessaging.instance.requestPermission();
 
+      final token = await FirebaseMessaging.instance.getToken();
+      if (kDebugMode) {
+        print("FCM Token: $token");
+      }
+
       if (notificationSetting.authorizationStatus ==
           AuthorizationStatus.authorized) {
         await _initLocalNotifications();
@@ -27,11 +32,6 @@ class PushNotificationService {
         FirebaseMessaging.onMessageOpenedApp.listen((message) {
           if (message.notification != null) {}
         });
-
-        final token = await FirebaseMessaging.instance.getToken();
-        if (kDebugMode) {
-          print("FCM Token: $token");
-        }
       }
     } catch (e) {
       if (kDebugMode) {

@@ -1,16 +1,32 @@
-class MovieModel {
+import 'package:hive/hive.dart';
+
+@HiveType(typeId: 0)
+class MovieModel extends HiveObject {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   bool? adult;
+  @HiveField(2)
   String? backdropPath;
+  @HiveField(3)
   String? originalLanguage;
+  @HiveField(4)
   String? originalTitle;
+  @HiveField(5)
   String? overview;
+  @HiveField(6)
   double? popularity;
+  @HiveField(7)
   String? posterPath;
+  @HiveField(8)
   String? releaseDate;
+  @HiveField(9)
   String? title;
+  @HiveField(10)
   int? runtime;
+  @HiveField(11)
   double? voteAverage;
+  @HiveField(12)
   int? voteCount;
   MovieModel({
     required this.adult,

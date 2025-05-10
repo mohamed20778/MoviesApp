@@ -10,7 +10,6 @@ import 'package:movies_app/cubits/observers/my_observer.dart';
 import 'package:movies_app/firebase_options.dart';
 import 'package:movies_app/routing/router_generator.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
@@ -20,6 +19,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+  await ScreenUtil.ensureScreenSize();
   Bloc.observer = MyObserver();
   WidgetsFlutterBinding.ensureInitialized();
   try {
