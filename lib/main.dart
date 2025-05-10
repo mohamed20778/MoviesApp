@@ -4,10 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:movies_app/core/services/push_notification_service.dart';
+import 'package:movies_app/core/utils/constants.dart';
 import 'package:movies_app/cubits/get_movie_cubit/get_movie_cubit.dart';
 import 'package:movies_app/cubits/observers/my_observer.dart';
 import 'package:movies_app/firebase_options.dart';
+import 'package:movies_app/models/movie_model.dart';
 import 'package:movies_app/routing/router_generator.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -21,6 +24,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   await ScreenUtil.ensureScreenSize();
   Bloc.observer = MyObserver();
+  // Hive.initFlutter();
+  Hive.registerAdapter(MovieModelAdapter());
+  await Hive.openBox(ApiConstants.kmovieBox);
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
