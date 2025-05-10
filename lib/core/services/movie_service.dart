@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:movies_app/core/utils/constants.dart';
-import 'package:movies_app/core/utils/functions/save_books.dart';
+import 'package:movies_app/core/utils/functions/save_Movie.dart';
 import 'package:movies_app/models/movie_model.dart';
 
 class MovieService {
@@ -33,8 +33,10 @@ class MovieService {
 
         for (int i = 0; i < data.length; i++) {
           movieList.add(MovieModel.fromJson(data[i]));
-          // ignore: unused_local_variable
-          saveBoxData(movieList, ApiConstants.kmovieBox);
+        }
+        saveBoxData(movieList, ApiConstants.kmovieBox);
+        if (kDebugMode) {
+          print("Successfully fetched: ${movieList.length}");
         }
       }
     } catch (e) {

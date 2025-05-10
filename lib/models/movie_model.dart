@@ -4,29 +4,29 @@ part 'movie_model.g.dart';
 @HiveType(typeId: 0)
 class MovieModel extends HiveObject {
   @HiveField(0)
-  int id;
+  int? id;
   @HiveField(1)
-  bool adult;
+  bool? adult;
   @HiveField(2)
-  String backdropPath;
+  String? backdropPath;
   @HiveField(3)
-  String originalLanguage;
+  String? originalLanguage;
   @HiveField(4)
-  String originalTitle;
+  String? originalTitle;
   @HiveField(5)
-  String overview;
+  String? overview;
   @HiveField(6)
-  double popularity;
+  double? popularity;
   @HiveField(7)
-  String posterPath;
+  String? posterPath;
   @HiveField(8)
-  String releaseDate;
+  String? releaseDate;
   @HiveField(9)
-  String title;
+  String? title;
   @HiveField(10)
-  int runtime;
+  int? runtime;
   @HiveField(11)
-  double voteAverage;
+  double? voteAverage;
   @HiveField(12)
   int voteCount;
   MovieModel({
@@ -45,18 +45,18 @@ class MovieModel extends HiveObject {
     required this.runtime,
   });
   factory MovieModel.fromJson(Map<String, dynamic> data) => MovieModel(
-    adult: data["adult"],
-    backdropPath: data["backdrop_path"],
-    id: data["id"],
-    originalLanguage: data["original_language"],
-    originalTitle: data["original_title"],
-    overview: data["overview"],
-    popularity: data["popularity"].toDouble(),
-    posterPath: data["poster_path"],
-    releaseDate: data["release_date"],
-    title: data["title"],
-    voteAverage: data["vote_average"].toDouble(),
-    voteCount: data["vote_count"],
-    runtime: data["runtime"],
+    adult: data["adult"] as bool? ?? false,
+    backdropPath: data["backdrop_path"] as String?,
+    id: data["id"] as int?,
+    originalLanguage: data["original_language"] as String?,
+    originalTitle: data["original_title"] as String?,
+    overview: data["overview"] as String?,
+    popularity: (data["popularity"] as num?)?.toDouble() ?? 0.0,
+    posterPath: data["poster_path"] as String?,
+    releaseDate: data["release_date"] as String?,
+    title: data["title"] as String?,
+    voteAverage: (data["vote_average"] as num?)?.toDouble() ?? 0.0,
+    voteCount: data["vote_count"] as int? ?? 0,
+    runtime: data["runtime"] as int? ?? 0, // Handle null runtime
   );
 }

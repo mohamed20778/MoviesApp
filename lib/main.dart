@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:movies_app/core/services/cached_service.dart';
+import 'package:movies_app/core/services/movie_service.dart';
 import 'package:movies_app/core/services/push_notification_service.dart';
 import 'package:movies_app/core/utils/constants.dart';
 import 'package:movies_app/cubits/get_movie_cubit/get_movie_cubit.dart';
@@ -24,9 +26,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   await ScreenUtil.ensureScreenSize();
   Bloc.observer = MyObserver();
-  // Hive.initFlutter();
+  await Hive.initFlutter();
   Hive.registerAdapter(MovieModelAdapter());
-  await Hive.openBox(ApiConstants.kmovieBox);
+  await Hive.deleteBoxFromDisk(ApiConstants.kmovieBox);
+  await Hive.openBox<MovieModel>(ApiConstants.kmovieBox);
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
@@ -58,7 +61,11 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder:
           (context, child) => BlocProvider(
-            create: (context) => GetMovieCubit(),
+            create:
+                (context) => GetMovieCubit(
+                  movieService: MovieService(),
+                  cachedService: CachedService(),
+                ),
             child: MediaQuery(
               data: MediaQuery.of(
                 context,
